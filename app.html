@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Московское Образование: Итоги 2025</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            scroll-behavior: smooth;
+        }
+        h1, h2, h3, h4, .font-heading {
+            font-family: 'Montserrat', sans-serif;
+        }
+        .hero-pattern {
+            background-color: #f8fafc;
+            background-image: linear-gradient(#e2e8f0 1px, transparent 1px), linear-gradient(90deg, #e2e8f0 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+        .forum-post {
+            border-left: 4px solid transparent;
+            transition: all 0.2s;
+        }
+        .forum-post:hover {
+            border-left-color: #ef4444;
+            background-color: #fff1f2;
+        }
+        .stat-card:hover {
+            transform: translateY(-3px);
+        }
+        /* Анимация появления страниц */
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased flex flex-col min-h-screen">
+
+    <!-- Навигация -->
+    <nav class="fixed w-full z-50 bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Логотип -->
+                <div class="flex-shrink-0 flex items-center gap-3 cursor-pointer" onclick="showPage('page-home')">
+                    <div class="bg-red-600 p-1.5 rounded text-white">
+                        <i data-lucide="book-open" class="h-6 w-6"></i>
+                    </div>
+                    <div>
+                        <span class="block font-heading font-bold text-lg leading-none text-gray-900">Московское</span>
+                        <span class="block font-heading font-bold text-lg leading-none text-red-600">Образование</span>
+                    </div>
+                </div>
+                <!-- Меню десктоп -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-6">
+                        <a href="#" onclick="showPage('page-home'); return false;" class="hover:text-red-600 px-3 py-2 rounded-md text-sm font-bold text-gray-700 uppercase tracking-wide transition-colors">Главная</a>
+                        <a href="#" onclick="showPage('page-calendar'); return false;" class="hover:text-red-600 px-3 py-2 rounded-md text-sm font-bold text-gray-700 uppercase tracking-wide transition-colors">Календарь</a>
+                        <a href="#" onclick="showPage('page-rating'); return false;" class="hover:text-red-600 px-3 py-2 rounded-md text-sm font-bold text-gray-700 uppercase tracking-wide transition-colors">Рейтинг школ</a>
+                        <a href="#" onclick="showPage('page-hackathon'); return false;" class="bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-full text-sm font-semibold text-gray-800 transition-colors">Хакатон</a>
+                    </div>
+                </div>
+                <!-- Мобильное меню кнопка -->
+                <div class="-mr-2 flex md:hidden">
+                    <button type="button" onclick="toggleMobileMenu()" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-red-500">
+                        <i data-lucide="menu" class="h-6 w-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Мобильное меню (скрыто по умолчанию) -->
+        <div class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full left-0 shadow-lg" id="mobile-menu">
+            <div class="px-4 pt-2 pb-4 space-y-1">
+                <a href="#" onclick="showPage('page-home'); toggleMobileMenu()" class="block px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-red-600 border-b border-gray-50">Главная</a>
+                <a href="#" onclick="showPage('page-calendar'); toggleMobileMenu()" class="block px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-red-600 border-b border-gray-50">Календарь олимпиад</a>
+                <a href="#" onclick="showPage('page-rating'); toggleMobileMenu()" class="block px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-red-600 border-b border-gray-50">Рейтинг школ</a>
+                <a href="#" onclick="showPage('page-hackathon'); toggleMobileMenu()" class="block px-3 py-3 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-red-600">Регистрация на Хакатон</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ОСНОВНОЙ КОНТЕНТ (Переключаемые страницы) -->
+    <div class="flex-grow pt-16">
+
+        <!-- СТРАНИЦА 1: ГЛАВНАЯ (Лента новостей) -->
+        <div id="page-home" class="fade-in">
+            <!-- Заголовок -->
+            <header class="pt-10 pb-10 md:pt-16 md:pb-16 bg-white border-b border-gray-200 hero-pattern">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center md:text-left md:flex md:items-end md:justify-between">
+                        <div class="max-w-3xl">
+                            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-100 text-red-700 text-xs font-bold uppercase tracking-wider mb-4">
+                                <span class="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
+                                Итоги 2025 года
+                            </div>
+                            <!-- Адаптивный размер шрифта: text-3xl на мобильном, text-6xl на десктопе -->
+                            <h1 class="text-3xl sm:text-4xl md:text-6xl font-heading font-black text-gray-900 tracking-tight mb-4 leading-tight">
+                                Школы Москвы: <br>
+                                <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-red-800">Рекордные результаты</span>
+                            </h1>
+                            <p class="text-lg md:text-xl text-gray-600 leading-relaxed max-w-2xl mx-auto md:mx-0">
+                                115 медалей на международных олимпиадах и прорыв в сфере ИИ. Столичное образование — мировой бренд.
+                            </p>
+                        </div>
+                        <div class="mt-8 md:mt-0 flex gap-3 justify-center md:justify-start">
+                            <button onclick="document.getElementById('forum-section').scrollIntoView({behavior: 'smooth'})" class="inline-flex items-center justify-center px-6 py-3 border border-gray-300 shadow-sm text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 transition-colors">
+                                <i data-lucide="message-circle" class="w-5 h-5 mr-2"></i>
+                                Обсудить
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Главная сетка -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- ЛЕВАЯ КОЛОНКА -->
+                    <main class="lg:col-span-2 space-y-6 md:space-y-8">
+                        <!-- Цифры -->
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                            <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                                <i data-lucide="bar-chart-2" class="w-5 h-5 mr-2 text-red-600"></i>
+                                Статистика в цифрах
+                            </h3>
+                            <!-- Адаптивная сетка статистики -->
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                                <div class="text-center p-3 bg-gray-50 rounded-lg">
+                                    <div class="text-2xl md:text-3xl font-black text-blue-600">115</div>
+                                    <div class="text-[10px] md:text-xs font-bold text-gray-500 uppercase">Медалей РФ</div>
+                                </div>
+                                <div class="text-center p-3 bg-gray-50 rounded-lg">
+                                    <div class="text-2xl md:text-3xl font-black text-red-600">64%</div>
+                                    <div class="text-[10px] md:text-xs font-bold text-gray-500 uppercase">Вклад Москвы</div>
+                                </div>
+                                <div class="text-center p-3 bg-gray-50 rounded-lg">
+                                    <div class="text-2xl md:text-3xl font-black text-purple-600">22</div>
+                                    <div class="text-[10px] md:text-xs font-bold text-gray-500 uppercase">Золота (Мир)</div>
+                                </div>
+                                <div class="text-center p-3 bg-gray-50 rounded-lg">
+                                    <div class="text-2xl md:text-3xl font-black text-green-600">649</div>
+                                    <div class="text-[10px] md:text-xs font-bold text-gray-500 uppercase">Проектов</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Статья 1 -->
+                        <article class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden group hover:shadow-md transition-shadow">
+                            <div class="h-48 md:h-64 overflow-hidden relative">
+                                <img src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=1000&q=80" alt="Лаборатория" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                <div class="absolute bottom-0 left-0 bg-gradient-to-t from-black/70 to-transparent p-4 w-full">
+                                    <span class="bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded">НАУКА</span>
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <h2 class="text-xl md:text-2xl font-bold text-gray-900 mb-3 group-hover:text-red-600 cursor-pointer">
+                                    Абсолютный триумф химиков и физиков
+                                </h2>
+                                <p class="text-sm md:text-base text-gray-600 mb-4 leading-relaxed">
+                                    Москвичи выиграли все золотые медали сборной РФ по химии, физике, биологии и астрономии на международных олимпиадах 2025 года. Уровень подготовки в профильных классах позволяет школьникам конкурировать с лучшими умами планеты.
+                                </p>
+                                <div class="flex items-center text-xs md:text-sm text-gray-400">
+                                    <i data-lucide="clock" class="w-4 h-4 mr-1"></i> 2 часа назад
+                                    <span class="mx-2">•</span>
+                                    <i data-lucide="eye" class="w-4 h-4 mr-1"></i> 1,245 просмотров
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- Статья 2 -->
+                        <article class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden group hover:shadow-md transition-shadow">
+                            <div class="p-6">
+                                <div class="flex items-center mb-4">
+                                    <span class="bg-purple-100 text-purple-700 text-xs font-bold px-2 py-1 rounded">ТЕХНОЛОГИИ</span>
+                                    <span class="ml-auto text-gray-400 text-sm">15 Янв 2026</span>
+                                </div>
+                                <h2 class="text-xl md:text-2xl font-bold text-gray-900 mb-3 group-hover:text-red-600 cursor-pointer">
+                                    Школьники создают ИИ будущего
+                                </h2>
+                                <p class="text-sm md:text-base text-gray-600 mb-4 leading-relaxed">
+                                    На международном турнире по искусственному интеллекту российская сборная взяла 6 золотых медалей. Более 180 московских школьников пробились в финал Открытой олимпиады по программированию.
+                                </p>
+                                <div class="bg-purple-50 p-4 rounded-lg border-l-4 border-purple-500 text-xs md:text-sm text-purple-900 italic">
+                                    «Московские школьники обеспечили 64% всех медалей российской сборной». — Metro Москва
+                                </div>
+                            </div>
+                        </article>
+                    </main>
+
+                    <!-- ПРАВАЯ КОЛОНКА -->
+                    <aside class="space-y-8">
+                        <!-- Виджет: Полезные ссылки -->
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5 ring-2 ring-red-50">
+                            <h3 class="font-bold text-gray-900 mb-4 text-sm uppercase tracking-wide flex items-center">
+                                <i data-lucide="bookmark" class="w-4 h-4 mr-2 text-red-500"></i>
+                                Важное
+                            </h3>
+                            <ul class="space-y-3">
+                                <li>
+                                    <a href="#" onclick="showPage('page-calendar'); return false;" class="group flex items-center justify-between p-2 rounded hover:bg-gray-50 cursor-pointer transition-all">
+                                        <span class="text-sm text-gray-700 font-medium group-hover:text-red-600">📅 Календарь ВсОШ 2026</span>
+                                        <i data-lucide="chevron-right" class="w-4 h-4 text-gray-300 group-hover:text-red-600"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" onclick="showPage('page-rating'); return false;" class="group flex items-center justify-between p-2 rounded hover:bg-gray-50 cursor-pointer transition-all">
+                                        <span class="text-sm text-gray-700 font-medium group-hover:text-red-600">🏆 Рейтинг школ</span>
+                                        <i data-lucide="chevron-right" class="w-4 h-4 text-gray-300 group-hover:text-red-600"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" onclick="showPage('page-hackathon'); return false;" class="group flex items-center justify-between p-2 rounded hover:bg-gray-50 cursor-pointer transition-all">
+                                        <span class="text-sm text-gray-700 font-medium group-hover:text-red-600">💻 Регистрация на хакатон</span>
+                                        <i data-lucide="chevron-right" class="w-4 h-4 text-gray-300 group-hover:text-red-600"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Форум -->
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-200" id="forum-section">
+                            <div class="p-4 border-b border-gray-100 bg-gray-50 rounded-t-xl flex justify-between items-center">
+                                <h3 class="font-bold text-gray-900 flex items-center">
+                                    <i data-lucide="message-square" class="w-4 h-4 mr-2"></i>
+                                    Мнения
+                                </h3>
+                                <span class="text-xs font-semibold text-green-600 bg-green-100 px-2 py-1 rounded-full">Онлайн: 1,420</span>
+                            </div>
+                            <div class="divide-y divide-gray-100">
+                                <div class="p-4 forum-post bg-white">
+                                    <div class="flex items-start gap-3">
+                                        <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-xs flex-shrink-0">А</div>
+                                        <div>
+                                            <div class="flex items-center gap-2 mb-1">
+                                                <span class="text-sm font-bold text-gray-900">Андрей (11 класс)</span>
+                                                <span class="text-[10px] text-gray-400">10 мин назад</span>
+                                            </div>
+                                            <p class="text-sm text-gray-600">В этом году "Science for Life" был просто космос!</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-4 forum-post bg-white">
+                                    <div class="flex items-start gap-3">
+                                        <div class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center text-red-600 font-bold text-xs flex-shrink-0">M</div>
+                                        <div>
+                                            <div class="flex items-center gap-2 mb-1">
+                                                <span class="text-sm font-bold text-gray-900">Мама_Олимпиадника</span>
+                                                <span class="text-[10px] text-gray-400">35 мин назад</span>
+                                            </div>
+                                            <p class="text-sm text-gray-600">22 золота на межнаре — это мощно. Гордость за наших ребят!</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+            
+            <!-- Инфо о проекте -->
+            <section class="bg-gray-900 text-gray-300 py-10 mt-12">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="border-b border-gray-800 pb-6 mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                        <h2 class="text-xl font-bold text-white">О проекте</h2>
+                        <div class="text-sm text-gray-500">ID: 25-MSK-EDU</div>
+                    </div>
+                    <div class="text-sm leading-relaxed">
+                        <p>Проект направлен на популяризацию науки и олимпиадного движения среди учащихся 5-11 классов.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- СТРАНИЦА 2: КАЛЕНДАРЬ -->
+        <div id="page-calendar" class="hidden fade-in py-6 md:py-10">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="mb-6 md:mb-8 flex items-center gap-4">
+                    <button onclick="showPage('page-home')" class="p-2 rounded-full hover:bg-gray-200 text-gray-500 transition-colors">
+                        <i data-lucide="arrow-left" class="w-6 h-6"></i>
+                    </button>
+                    <h1 class="text-2xl md:text-3xl font-heading font-bold text-gray-900">Календарь 2026</h1>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Дата</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Предмет</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Этап</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Место</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">15-17 Янв</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex items-center"><i data-lucide="atom" class="w-4 h-4 mr-2 text-blue-500"></i> Физика</td>
+                                    <td class="px-6 py-4 whitespace-nowrap"><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Региональный</span></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">МГУ</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">22 Янв</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex items-center"><i data-lucide="calculator" class="w-4 h-4 mr-2 text-red-500"></i> Математика</td>
+                                    <td class="px-6 py-4 whitespace-nowrap"><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Региональный</span></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">ЦПМ</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">10 Фев</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex items-center"><i data-lucide="palette" class="w-4 h-4 mr-2 text-yellow-500"></i> МХК</td>
+                                    <td class="px-6 py-4 whitespace-nowrap"><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Заключительный</span></td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Третьяковка</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- СТРАНИЦА 3: РЕЙТИНГ (Адаптивные карточки) -->
+        <div id="page-rating" class="hidden fade-in py-6 md:py-10">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="mb-6 md:mb-8 flex items-center gap-4">
+                    <button onclick="showPage('page-home')" class="p-2 rounded-full hover:bg-gray-200 text-gray-500 transition-colors">
+                        <i data-lucide="arrow-left" class="w-6 h-6"></i>
+                    </button>
+                    <div>
+                        <h1 class="text-2xl md:text-3xl font-heading font-bold text-gray-900">Топ школ 2025</h1>
+                        <p class="text-gray-500 text-sm mt-1">По количеству победителей олимпиад</p>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <!-- 1 Место -->
+                    <div class="bg-white p-5 md:p-6 rounded-xl shadow-sm border border-l-4 border-l-yellow-400 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center font-bold text-yellow-600 flex-shrink-0">1</div>
+                            <div>
+                                <h3 class="font-bold text-lg leading-tight">Лицей НИУ ВШЭ</h3>
+                                <p class="text-sm text-gray-500 mt-1">Профиль: Экономика, IT</p>
+                            </div>
+                        </div>
+                        <div class="flex sm:block items-center justify-between pl-14 sm:pl-0 sm:text-right">
+                            <span class="text-sm text-gray-500 sm:hidden">Результат:</span>
+                            <div>
+                                <div class="font-black text-xl text-gray-900">142</div>
+                                <div class="text-[10px] text-gray-500 uppercase">Диплома</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2 Место -->
+                    <div class="bg-white p-5 md:p-6 rounded-xl shadow-sm border border-l-4 border-l-gray-300 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center font-bold text-gray-600 flex-shrink-0">2</div>
+                            <div>
+                                <h3 class="font-bold text-lg leading-tight">Школа № 1535</h3>
+                                <p class="text-sm text-gray-500 mt-1">Профиль: Медицина, Языки</p>
+                            </div>
+                        </div>
+                        <div class="flex sm:block items-center justify-between pl-14 sm:pl-0 sm:text-right">
+                            <span class="text-sm text-gray-500 sm:hidden">Результат:</span>
+                            <div>
+                                <div class="font-black text-xl text-gray-900">115</div>
+                                <div class="text-[10px] text-gray-500 uppercase">Диплома</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3 Место -->
+                    <div class="bg-white p-5 md:p-6 rounded-xl shadow-sm border border-l-4 border-l-orange-400 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center font-bold text-orange-600 flex-shrink-0">3</div>
+                            <div>
+                                <h3 class="font-bold text-lg leading-tight">Школа № 57</h3>
+                                <p class="text-sm text-gray-500 mt-1">Профиль: Математика</p>
+                            </div>
+                        </div>
+                        <div class="flex sm:block items-center justify-between pl-14 sm:pl-0 sm:text-right">
+                             <span class="text-sm text-gray-500 sm:hidden">Результат:</span>
+                            <div>
+                                <div class="font-black text-xl text-gray-900">98</div>
+                                <div class="text-[10px] text-gray-500 uppercase">Диплома</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- СТРАНИЦА 4: ХАКАТОН (Адаптивная форма) -->
+        <div id="page-hackathon" class="hidden fade-in py-6 md:py-10">
+            <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="mb-6 md:mb-8 flex items-center gap-4">
+                    <button onclick="showPage('page-home')" class="p-2 rounded-full hover:bg-gray-200 text-gray-500 transition-colors">
+                        <i data-lucide="arrow-left" class="w-6 h-6"></i>
+                    </button>
+                    <h1 class="text-2xl md:text-3xl font-heading font-bold text-gray-900">CyberMoscow 2026</h1>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-lg border border-purple-100 overflow-hidden">
+                    <div class="bg-purple-600 p-6 md:p-8 text-white text-center">
+                        <h2 class="text-xl md:text-2xl font-bold mb-2">Регистрация открыта</h2>
+                        <p class="text-purple-100 text-sm md:text-base">Создай IT-проект для города за 48 часов</p>
+                    </div>
+                    <div class="p-6 md:p-8">
+                        <form onsubmit="alert('Ваша заявка принята! Мы свяжемся с вами.'); showPage('page-home'); return false;" class="space-y-4 md:space-y-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">ФИО Капитана</label>
+                                <input type="text" required class="w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 p-3 border" placeholder="Иванов Иван Иванович">
+                            </div>
+                            <!-- Сетка превращается в одну колонку на мобильных -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Школа</label>
+                                    <input type="text" required class="w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 p-3 border" placeholder="№ 1502">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Класс</label>
+                                    <select class="w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 p-3 border bg-white">
+                                        <option>8</option>
+                                        <option>9</option>
+                                        <option>10</option>
+                                        <option>11</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Идея проекта (коротко)</label>
+                                <textarea rows="3" class="w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 p-3 border" placeholder="Приложение для..."></textarea>
+                            </div>
+                            <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors">
+                                Отправить заявку
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Футер -->
+    <footer class="bg-gray-100 border-t border-gray-200 py-8 text-center text-xs text-gray-500">
+        <p class="font-semibold text-gray-700">&copy; 2026 Портал «Московское Образование».</p>
+        <div class="mt-4 max-w-2xl mx-auto px-4">
+            <p class="mb-1">Данный сайт является учебным проектом, нацеленным на изучение процесса создания веб-сайтов.</p>
+            <p>Тематика проекта: «Достижения школьников Москвы в науке, спорте и IT в 2025 году».</p>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        // Управление видимостью страниц
+        function showPage(pageId) {
+            const pages = ['page-home', 'page-calendar', 'page-rating', 'page-hackathon'];
+            pages.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.add('hidden');
+            });
+
+            const selected = document.getElementById(pageId);
+            if (selected) {
+                selected.classList.remove('hidden');
+                window.scrollTo(0, 0);
+                lucide.createIcons();
+            }
+        }
+
+        // Управление мобильным меню
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+    </script>
+</body>
+</html>
